@@ -5,13 +5,11 @@ $InformationPreference = "SilentlyContinue"
 $VerbosePreference = "SilentlyContinue"
 $ProgressPreference = "SilentlyContinue"
 
-# Redirect all output streams to null except Write-Host
 function Redirect-AllStreams {
     param(
         [ScriptBlock]$ScriptBlock
     )
-    
-    & $ScriptBlock 2>&1 3>&1 4>&1 5>&1 6>&1 | Out-Null
+    & $ScriptBlock *> $null
 }
 
 Write-Host "[1/5] " -ForegroundColor Cyan
@@ -41,8 +39,7 @@ $extractPath = "$env:TEMP\PsExecTemp"
 Redirect-AllStreams { Expand-Archive -Path $psToolsZip -DestinationPath $extractPath -Force }
 $psexec = "$extractPath\PsExec.exe"
 
-# Accept EULA
-Redirect-AllStreams { & $psexec -accepteula -nobanner 2>&1 | Out-Null }
+Redirect-AllStreams { & $psexec -accepteula -nobanner *> $null }
 
 Write-Host "[3/5 Extracting dlls] " -ForegroundColor Cyan
 Redirect-AllStreams { 
@@ -70,20 +67,18 @@ Redirect-AllStreams {
     } else { 
         Write-Host 'Please run again' 
     }
-    " 2>&1 | Out-Null
+    " *> $null
 }
 
 Write-Host "[4/5 Parsing Dlls] " -ForegroundColor Cyan
 $safeFolder = "$env:TEMP\WPR_Temp"
 if (-not (Test-Path $safeFolder)) {
-    Redirect-AllStreams { New-Item -ItemType Directory -Path $safeFolder -Force | Out-Null }
+    Redirect-AllStreams { New-Item -ItemType Directory -Path $safeFolder -Force }
 }
-# Ensure full write permissions for SYSTEM and Administrators
-Redirect-AllStreams { icacls $safeFolder /grant "SYSTEM:(OI)(CI)F" /grant "Administrators:(OI)(CI)F" 2>&1 | Out-Null }
+Redirect-AllStreams { icacls $safeFolder /grant "SYSTEM:(OI)(CI)F" /grant "Administrators:(OI)(CI)F" *> $null }
 
 Write-Host "[5/5 Checking integrity] " -ForegroundColor Cyan
 $exePath = "$safeFolder\CheatDllFinder.exe"
-# Remove existing file if any (to avoid lock issues)
 if (Test-Path $exePath) {
     Redirect-AllStreams { Remove-Item $exePath -Force -ErrorAction SilentlyContinue }
 }
