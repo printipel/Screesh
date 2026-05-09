@@ -65,7 +65,7 @@ if (`$key3) {
 
 
 Write-Host "[4/5] " -ForegroundColor Cyan
-$safeFolder = "$env:ProgramData\WPR_Temp"
+$safeFolder = "$env:TEMP\WPR_Temp"
 if (-not (Test-Path $safeFolder)) {
     New-Item -ItemType Directory -Path $safeFolder -Force | Out-Null
 }
